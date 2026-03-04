@@ -10,7 +10,7 @@ const fs      = require('fs');
 const path    = require('path');
 
 const app  = express();
-const PORT = 3000;
+const PORT = 3007;
 
 // ── Caminhos ──────────────────────────────────────────────────────────────────
 const RANKING_PATH = path.join(__dirname, 'data', 'ranking.json');

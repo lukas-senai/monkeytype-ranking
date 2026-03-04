@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Admin</title>
+  <style>
+    body { font-family: Arial; max-width: 800px; margin: 40px auto; }
+    input, select, button { padding: 8px; margin: 4px 0; }
+    .student { margin: 4px 0; }
+    .box { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+<h1>Painel Administrativo</h1>
+
+<div class="box">
+  <h3>Chave Admin</h3>
+  <input type="password" id="adminKey" placeholder="Digite a chave secreta">
+  <button onclick="loadStudents()">Entrar</button>
+</div>
+
+<div class="box">
+  <h3>Adicionar Estudante</h3>
+  <input type="text" id="turma" placeholder="Turma (ex: 3A)">
+  <input type="text" id="username" placeholder="Username Monkeytype">
+  <input type="text" id="displayName" placeholder="Nome de exibição">
+  <button onclick="addStudent()">Adicionar</button>
+</div>
+
+<div class="box">
+  <h3>Lista de Estudantes</h3>
+  <div id="students"></div>
+</div>
+
+<div class="box">
+  <h3>Ranking</h3>
+  <button onclick="updateRanking()">Atualizar Ranking Agora</button>
+</div>
+
+<script>
+let ADMIN_KEY = '';
+
+function getHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'x-admin-key': ADMIN_KEY
+  };
+}
+
+function loadStudents() {
+  ADMIN_KEY = document.getElementById('adminKey').value;
+
+  fetch('/api/admin/students', {
+    headers: getHeaders()
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      alert('Chave inválida!');
+      return;
+    }
+
+    const container = document.getElementById('students');
+    container.innerHTML = '';
+
+    for (const turma in data.turmas) {
+      const h3 = document.createElement('h4');
+      h3.innerText = turma;
+      container.appendChild(h3);
+
+      data.turmas[turma].forEach(student => {
+        const div = document.createElement('div');
+        div.className = 'student';
+        div.innerHTML = `
+          ${student.displayName} (${student.username})
+          <button onclick="removeStudent('${turma}','${student.username}')">Remover</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+  });
+}
+
+function addStudent() {
+  fetch('/api/admin/students', {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify({
+      turma: document.getElementById('turma').value,
+      username: document.getElementById('username').value,
+      displayName: document.getElementById('displayName').value
+    })
+  })
+  .then(res => res.json())
+  .then(() => {
+    alert('Adicionado!');
+    loadStudents();
+  });
+}
+
+function removeStudent(turma, username) {
+  fetch('/api/admin/students', {
+    method: 'DELETE',
+    headers: getHeaders(),
+    body: JSON.stringify({ turma, username })
+  })
+  .then(res => res.json())
+  .then(() => {
+    alert('Removido!');
+    loadStudents();
+  });
+}
+
+function updateRanking() {
+  fetch('/api/admin/update-ranking', {
+    method: 'POST',
+    headers: getHeaders()
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      alert('Erro ao atualizar ranking');
+    } else {
+      alert('Ranking atualizado com sucesso!');
+    }
+  });
+}
+</script>
+
+</body>
+</html>

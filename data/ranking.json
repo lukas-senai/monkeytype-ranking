@@ -1,0 +1,42 @@
+{
+  "3A": [
+    {
+      "displayName": "Maria",
+      "username": "Peixoox",
+      "wpm": 144.08,
+      "timestamp": 1770671483402
+    },
+    {
+      "displayName": "Maria",
+      "username": "LURIAS",
+      "wpm": 124.09,
+      "timestamp": 1772548940217
+    },
+    {
+      "displayName": "João",
+      "username": "shionn_",
+      "wpm": 121.62,
+      "timestamp": 1771511140387
+    },
+    {
+      "displayName": "Maria",
+      "username": "eduardocudepato",
+      "wpm": 110.43,
+      "timestamp": 1772211199285
+    },
+    {
+      "displayName": "Maria",
+      "username": "GarskO",
+      "wpm": 94.4,
+      "timestamp": 1772499263088
+    }
+  ],
+  "3B": [
+    {
+      "displayName": "Pedro",
+      "username": "Franxicou",
+      "wpm": 123.98,
+      "timestamp": 1758307697584
+    }
+  ]
+}

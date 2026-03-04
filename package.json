@@ -1,0 +1,13 @@
+{
+  "name": "monkeytype-ranking",
+  "version": "1.0.0",
+  "description": "Ranking de digitação por turma usando a API pública do Monkeytype",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "update": "node scripts/updateRanking.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "turmas": {
+    "3A": [
+      { "username": "shionn_", "displayName": "João" },
+      { "username": "LURIAS",  "displayName": "Maria" },
+      { "username": "Peixoox",  "displayName": "Maria" },
+      { "username": "eduardocudepato",  "displayName": "Maria" },
+      { "username": "GarskO",  "displayName": "Maria" }
+    ],
+    "3B": [
+      { "username": "Franxicou", "displayName": "Pedro" }
+    ]
+  }
+}

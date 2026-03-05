@@ -117,6 +117,10 @@ app.delete('/api/admin/students', checkAdmin, (req, res) => {
     s => s.username !== username
   );
 
+  if (students.turmas[turma].length === 0) {
+    delete students.turmas[turma];
+  }
+
   writeJSON(STUDENTS_PATH, students);
 
   res.json({ success: true });

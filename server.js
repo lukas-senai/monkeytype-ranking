@@ -16,7 +16,7 @@ const app = express();
 const PORT = 3007;
 
 // 🔐 CHAVE ADMIN (MUDE ISSO)
-const ADMIN_KEY = 'MINHA_CHAVE_SUPER_SECRETA_123';
+const ADMIN_KEY = 'Ditto';
 
 // ── Caminhos ─────────────────────────────────────
 const RANKING_PATH = path.join(__dirname, 'data', 'ranking.json');

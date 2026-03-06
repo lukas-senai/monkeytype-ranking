@@ -1,15 +1,219 @@
 {
   "turmas": {
-    "3A": [
-      { "username": "shionn_", "displayName": "João" },
-      { "username": "LURIAS",  "displayName": "Maria" },
-      { "username": "Peixoox",  "displayName": "Maria" },
-      { "username": "eduardocudepato",  "displayName": "Maria" },
-      { "username": "GarskO",  "displayName": "Maria" }
+    "Professores": [
+      {
+        "username": "shionn_",
+        "displayName": "Lucas"
+      },
+      {
+        "username": "dougschicora",
+        "displayName": "Douglas"
+      }
     ],
-    "3B": [
-      { "username": "Franxicou", "displayName": "Pedro" },
-      { "username": "reseba1234", "displayName": "Pedro" }
+    "TECI 2026/1 M1": [
+      {
+        "username": "4norm",
+        "displayName": "Eiji "
+      },
+      {
+        "username": "tonynhomaldito",
+        "displayName": "Antony Batista"
+      },
+      {
+        "username": "asonozz",
+        "displayName": "Nathalia "
+      },
+      {
+        "username": "juliaventura",
+        "displayName": "Júlia "
+      },
+      {
+        "username": "Emillyfon",
+        "displayName": "Emilly "
+      },
+      {
+        "username": "CeekeeBizaarro",
+        "displayName": "Nicolas "
+      },
+      {
+        "username": "livinglavidaloca",
+        "displayName": "Carlos "
+      },
+      {
+        "username": "FernandaM",
+        "displayName": "Fernanda "
+      }
+    ],
+    "Trilhas V1 2026": [
+      {
+        "username": "Emyllin",
+        "displayName": "Emyllin "
+      },
+      {
+        "username": "thabata_maia",
+        "displayName": "Thabata "
+      },
+      {
+        "username": "Miguel_Mira",
+        "displayName": "Miguel Mira"
+      },
+      {
+        "username": "Henrique_Comin",
+        "displayName": "Henrique "
+      },
+      {
+        "username": "luiza_braggio",
+        "displayName": "Luiza "
+      },
+      {
+        "username": "isadora_jacinto",
+        "displayName": "Isadora Jacinto"
+      },
+      {
+        "username": "Trigoli_97",
+        "displayName": "Julia "
+      },
+      {
+        "username": "Ana__",
+        "displayName": "Ana "
+      },
+      {
+        "username": "Isadoraaa",
+        "displayName": "Isadora Prochnow"
+      },
+      {
+        "username": "leo14",
+        "displayName": "Léo "
+      },
+      {
+        "username": "kielzin",
+        "displayName": "Kauan "
+      },
+      {
+        "username": "dezinho",
+        "displayName": "André "
+      },
+      {
+        "username": "Paulo_Correa",
+        "displayName": "Paulo "
+      },
+      {
+        "username": "Cercalitos__",
+        "displayName": "João Cercal"
+      },
+      {
+        "username": "Alehandro_macedo",
+        "displayName": "Alehandro "
+      },
+      {
+        "username": "leka_leticia",
+        "displayName": "Letícia "
+      }
+    ],
+    "Trilhas V3 2026": [
+      {
+        "username": "scheineder",
+        "displayName": "Fernanda "
+      },
+      {
+        "username": "NICZI14",
+        "displayName": "Nicole "
+      },
+      {
+        "username": "_Cassx099",
+        "displayName": "Rafaela "
+      },
+      {
+        "username": "luluzica",
+        "displayName": "Luana "
+      },
+      {
+        "username": "irosquinha",
+        "displayName": "Iris "
+      },
+      {
+        "username": "Jotmuel1999",
+        "displayName": "Jotmuel "
+      },
+      {
+        "username": "pedro1432",
+        "displayName": "Pedro "
+      },
+      {
+        "username": "rafael_alosio",
+        "displayName": "Rafael "
+      },
+      {
+        "username": "kalebin_FVM",
+        "displayName": "Kalebe "
+      },
+      {
+        "username": "pudim_123",
+        "displayName": "João "
+      },
+      {
+        "username": "Alxn77",
+        "displayName": "Alan "
+      },
+      {
+        "username": "josebatata",
+        "displayName": "José "
+      },
+      {
+        "username": "padilha777",
+        "displayName": "Henrique "
+      },
+      {
+        "username": "otavio231",
+        "displayName": "Otavio "
+      },
+      {
+        "username": "lukitos",
+        "displayName": "Lucas "
+      },
+      {
+        "username": "tornando10",
+        "displayName": "Jefté "
+      },
+      {
+        "username": "CHEBATA_",
+        "displayName": "Victor "
+      },
+      {
+        "username": "superxz",
+        "displayName": "Kaio "
+      },
+      {
+        "username": "luisinhohs",
+        "displayName": "Luis "
+      },
+      {
+        "username": "sanuel_vasco",
+        "displayName": "Samuel "
+      },
+      {
+        "username": "flavin_d_pneu1",
+        "displayName": "Matheus "
+      }
+    ],
+    "TECI 2025/1 INT": [
+      {
+        "username": "Hanna_wel",
+        "displayName": "Lohanna"
+      },
+      {
+        "username": "renata_g_tavares",
+        "displayName": "Renata"
+      },
+      {
+        "username": "PqSorriso",
+        "displayName": "Gustavo"
+      },
+      {
+        "username": "thatPinkVenom",
+        "displayName": "Guilherme"
+      }
     ]
   }
 }
+

@@ -3,6 +3,8 @@ services:
   api1:
     build: .
     container_name: monkeytype-ranking
+    volumes:
+      - ./data:/usr/app/data
     networks:
       - proxy
     restart: always

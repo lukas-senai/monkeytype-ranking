@@ -5,17 +5,18 @@
  * - API pública de ranking
  * - API administrativa protegida por x-admin-key
  * - Endpoint para atualizar ranking manualmente
+ * - Streaming de logs para atualização de ranking
  */
 
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 
 const app = express();
 const PORT = 3007;
 
-// 🔐 CHAVE ADMIN (MUDE ISSO)
+// 🔐 CHAVE ADMIN
 const ADMIN_KEY = 'Ditto';
 
 // ── Caminhos ─────────────────────────────────────
@@ -39,9 +40,11 @@ function writeJSON(filePath, data) {
 
 function checkAdmin(req, res, next) {
   const key = req.headers['x-admin-key'];
+
   if (key !== ADMIN_KEY) {
     return res.status(401).json({ error: 'Não autorizado' });
   }
+
   next();
 }
 
@@ -53,7 +56,7 @@ app.get('/api/turmas', (req, res) => {
   try {
     const ranking = readJSON(RANKING_PATH);
     res.json({ turmas: Object.keys(ranking) });
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: 'Erro ao ler ranking.' });
   }
 });
@@ -68,7 +71,8 @@ app.get('/api/ranking/:turma', (req, res) => {
     }
 
     res.json({ turma, ranking: ranking[turma] });
-  } catch (err) {
+
+  } catch {
     res.status(500).json({ error: 'Erro ao ler ranking.' });
   }
 });
@@ -77,14 +81,14 @@ app.get('/api/ranking/:turma', (req, res) => {
 // 🔐 API ADMIN
 // ────────────────────────────────────────────────
 
-// Listar estudantes
+// listar estudantes
 app.get('/api/admin/students', checkAdmin, (req, res) => {
-  const students = readJSON(STUDENTS_PATH);
-  res.json(students);
+  res.json(readJSON(STUDENTS_PATH));
 });
 
-// Adicionar estudante
+// adicionar estudante
 app.post('/api/admin/students', checkAdmin, (req, res) => {
+
   const { turma, username, displayName } = req.body;
 
   if (!turma || !username || !displayName) {
@@ -98,15 +102,16 @@ app.post('/api/admin/students', checkAdmin, (req, res) => {
   }
 
   students.turmas[turma].push({ username, displayName });
+
   writeJSON(STUDENTS_PATH, students);
 
   res.json({ success: true });
 });
 
-// Remover estudante
+// remover estudante
 app.delete('/api/admin/students', checkAdmin, (req, res) => {
-  const { turma, username } = req.body;
 
+  const { turma, username } = req.body;
   const students = readJSON(STUDENTS_PATH);
 
   if (!students.turmas[turma]) {
@@ -124,22 +129,65 @@ app.delete('/api/admin/students', checkAdmin, (req, res) => {
   writeJSON(STUDENTS_PATH, students);
 
   res.json({ success: true });
+
 });
 
-// Atualizar ranking manualmente
-app.post('/api/admin/update-ranking', checkAdmin, (req, res) => {
-  exec('node scripts/updateRanking.js', (error, stdout, stderr) => {
-    if (error) {
-      console.error(stderr);
-      return res.status(500).json({ error: 'Erro ao atualizar ranking.' });
-    }
+// ────────────────────────────────────────────────
+// Atualizar ranking com logs em tempo real
+// ────────────────────────────────────────────────
 
-    console.log(stdout);
-    res.json({ success: true });
+app.get('/api/admin/update-ranking-stream', (req, res) => {
+
+  const key = req.headers['x-admin-key'];
+  const turma = req.query.turma;
+
+  if (key !== ADMIN_KEY) {
+    return res.status(401).end('Não autorizado');
+  }
+
+  if (!turma) {
+    return res.status(400).end('Turma não informada');
+  }
+
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  const child = spawn('node', [
+    'scripts/updateRanking.js',
+    '--turma',
+    turma
+  ]);
+
+  child.stdout.on('data', (data) => {
+    const lines = data.toString().split('\n');
+
+    lines.forEach(line => {
+      if (line.trim()) {
+        res.write(`data: ${line}\n\n`);
+      }
+    });
   });
+
+  child.stderr.on('data', (data) => {
+    const lines = data.toString().split('\n');
+
+    lines.forEach(line => {
+      if (line.trim()) {
+        res.write(`data: ERRO: ${line}\n\n`);
+      }
+    });
+  });
+
+  child.on('close', (code) => {
+    res.write(`data: Processo finalizado (code ${code})\n\n`);
+    res.end();
+  });
+
 });
 
 // ── Start ───────────────────────────────────────
+
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

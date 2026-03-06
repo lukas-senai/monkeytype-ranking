@@ -31,11 +31,9 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-/**
- * Faz uma requisição GET simples e retorna JSON
- */
 function fetchJSON(url) {
   return new Promise((resolve, reject) => {
+
     https.get(url, { headers: { 'Accept': 'application/json' } }, (res) => {
 
       let raw = '';
@@ -57,12 +55,10 @@ function fetchJSON(url) {
       });
 
     }).on('error', reject);
+
   });
 }
 
-/**
- * Busca perfil público do Monkeytype
- */
 async function fetchProfile(username) {
 
   const url  = `${MONKEYTYPE_API}/users/${encodeURIComponent(username)}/profile`;
@@ -75,12 +71,9 @@ async function fetchProfile(username) {
   return json.data;
 }
 
-/**
- * Extrai o melhor WPM dos últimos 90 dias
- */
 function extractBestWpm(profile) {
 
-  const cutoff    = Date.now() - NINETY_DAYS_MS;
+  const cutoff = Date.now() - NINETY_DAYS_MS;
   const timeBests = profile?.personalBests?.time;
 
   if (!timeBests || typeof timeBests !== 'object') {
@@ -117,7 +110,6 @@ async function main() {
 
   console.log(`[${new Date().toISOString()}] Iniciando atualização do ranking…`);
 
-  // ── leitura do argumento --turma
   const turmaArgIndex = process.argv.indexOf('--turma');
   const turmaFiltro = turmaArgIndex !== -1
     ? process.argv[turmaArgIndex + 1]
@@ -127,11 +119,17 @@ async function main() {
     console.log(`🔎 Atualizando apenas a turma: ${turmaFiltro}`);
   }
 
-  // ── leitura da lista de alunos
+  // ── ler students
   const studentsRaw = fs.readFileSync(STUDENTS_PATH, 'utf8');
   const { turmas }  = JSON.parse(studentsRaw);
 
-  const ranking = {};
+  // ── ler ranking existente (para não apagar outras turmas)
+  let ranking = {};
+
+  if (fs.existsSync(RANKING_PATH)) {
+    ranking = JSON.parse(fs.readFileSync(RANKING_PATH, 'utf8'));
+  }
+
   const turmasEntries = Object.entries(turmas);
 
   for (let i = 0; i < turmasEntries.length; i++) {
@@ -162,9 +160,9 @@ async function main() {
 
         entries.push({
           displayName: aluno.displayName,
-          username:    aluno.username,
-          wpm:         best.wpm,
-          timestamp:   best.timestamp
+          username: aluno.username,
+          wpm: best.wpm,
+          timestamp: best.timestamp
         });
 
       } catch (err) {
@@ -177,9 +175,10 @@ async function main() {
 
     // ordenar ranking
     entries.sort((a, b) => b.wpm - a.wpm);
+
+    // atualizar apenas esta turma
     ranking[turmaName] = entries;
 
-    // delay entre turmas (somente quando atualizando todas)
     if (!turmaFiltro && i < turmasEntries.length - 1) {
       console.log(`⏳ Aguardando 30 segundos antes da próxima turma...`);
       await sleep(TURMA_DELAY_MS);
@@ -187,7 +186,7 @@ async function main() {
 
   }
 
-  // salvar ranking
+  // salvar ranking mantendo turmas existentes
   fs.writeFileSync(
     RANKING_PATH,
     JSON.stringify(ranking, null, 2),
@@ -195,6 +194,7 @@ async function main() {
   );
 
   console.log(`\n[${new Date().toISOString()}] ranking.json atualizado com sucesso.`);
+
 }
 
 main().catch(err => {

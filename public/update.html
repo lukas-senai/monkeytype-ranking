@@ -88,17 +88,10 @@ function executar(){
     const turma = document.getElementById("turma").value
     const senha = document.getElementById("senha").value
 
-    const url = `/api/admin/update-ranking-stream?turma=${encodeURIComponent(turma)}`
+    const url =
+      `/api/admin/update-ranking-stream?turma=${encodeURIComponent(turma)}&key=${encodeURIComponent(senha)}`
 
-    const evt = new EventSource(url, {
-        withCredentials:false
-    })
-
-    fetch(url,{
-        headers:{
-            "x-admin-key":senha
-        }
-    })
+    const evt = new EventSource(url)
 
     evt.onmessage = e => append(e.data)
 

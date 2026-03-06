@@ -81,6 +81,29 @@ app.get('/api/ranking/:turma', (req, res) => {
 // 🔐 API ADMIN
 // ────────────────────────────────────────────────
 
+// listar turmas do students.json
+app.get('/api/admin/turmas', (req, res) => {
+
+  try {
+
+    const students = readJSON(STUDENTS_PATH);
+
+    if (!students.turmas) {
+      return res.json({ turmas: [] });
+    }
+
+    res.json({
+      turmas: Object.keys(students.turmas)
+    });
+
+  } catch {
+
+    res.status(500).json({ error: 'Erro ao ler students.json' });
+
+  }
+
+});
+
 // listar estudantes
 app.get('/api/admin/students', checkAdmin, (req, res) => {
   res.json(readJSON(STUDENTS_PATH));

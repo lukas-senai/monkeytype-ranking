@@ -39,7 +39,7 @@ function writeJSON(filePath, data) {
 }
 
 function checkAdmin(req, res, next) {
-  const key = req.headers['x-admin-key'];
+  const key = req.headers['x-admin-key'] || req.query.key;
 
   if (key !== ADMIN_KEY) {
     return res.status(401).json({ error: 'Não autorizado' });
@@ -161,7 +161,7 @@ app.delete('/api/admin/students', checkAdmin, (req, res) => {
 
 app.get('/api/admin/update-ranking-stream', (req, res) => {
 
-  const key = req.headers['x-admin-key'];
+  const key = req.headers['x-admin-key'] || req.query.key;
   const turma = req.query.turma;
 
   if (key !== ADMIN_KEY) {
